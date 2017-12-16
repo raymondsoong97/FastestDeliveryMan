@@ -29,8 +29,11 @@ public class FastestDeliveryMan implements Serializable{
     public FastestDeliveryMan(String restaurant,String FoodName) {
     this.restaurant = restaurant;
     this.FoodName = FoodName;
-    
   }
+
+    FastestDeliveryMan(String foodname) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     
     
