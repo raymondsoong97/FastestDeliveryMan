@@ -5,24 +5,33 @@
  */
 package fastestdeliveryman;
 
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
  * @author pc
  */
 public class CustomerMenu extends javax.swing.JFrame {
-
+    
     private List<FastestDeliveryMan> FastestDeliveryManList = new ArrayList<>();
     /**
      * Creates new form CustomerMenu
      */
+    DecimalFormat format = new DecimalFormat("##.00");
+    
     public CustomerMenu() {
         initComponents();
         Restaurant.grabFocus();
         FoodName.grabFocus();
+        
     }
 
     /**
@@ -40,10 +49,16 @@ public class CustomerMenu extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         FoodName = new javax.swing.JComboBox<String>();
         Add = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        show = new javax.swing.JTextArea();
         Confirm = new javax.swing.JButton();
-        Cancel = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        quantity = new javax.swing.JTextField();
+        price = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        show = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        totalAmt = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -51,7 +66,7 @@ public class CustomerMenu extends javax.swing.JFrame {
 
         RestaurantNAme.setText("Restaurant Name : ");
 
-        Restaurant.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Restaurant 1", "Restaurant 2", "Restaurant 3", "Restaurant 4" }));
+        Restaurant.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mamak", "Cafe", "ChineseFood", "ThaiFood" }));
         Restaurant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 RestaurantActionPerformed(evt);
@@ -60,7 +75,12 @@ public class CustomerMenu extends javax.swing.JFrame {
 
         jLabel1.setText("Choose Food :");
 
-        FoodName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mee", "Rice", "Soup", "Fish", "Chichken" }));
+        FoodName.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Mee", "Rice", "Soup", "Fish", "Chicken" }));
+        FoodName.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FoodNameActionPerformed(evt);
+            }
+        });
 
         Add.setText("Add");
         Add.addActionListener(new java.awt.event.ActionListener() {
@@ -69,10 +89,6 @@ public class CustomerMenu extends javax.swing.JFrame {
             }
         });
 
-        show.setColumns(20);
-        show.setRows(5);
-        jScrollPane1.setViewportView(show);
-
         Confirm.setText("Confirm");
         Confirm.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -80,7 +96,48 @@ public class CustomerMenu extends javax.swing.JFrame {
             }
         });
 
-        Cancel.setText("Cancel");
+        jLabel2.setText("Price(RM) :");
+
+        jLabel3.setText("Quantity:");
+
+        quantity.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quantityActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Cancel");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        show.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Food Name", "Quantity", "Price(RM)"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        show.setEnabled(false);
+        jScrollPane1.setViewportView(show);
+        if (show.getColumnModel().getColumnCount() > 0) {
+            show.getColumnModel().getColumn(0).setResizable(false);
+            show.getColumnModel().getColumn(1).setResizable(false);
+            show.getColumnModel().getColumn(2).setResizable(false);
+        }
+
+        jLabel4.setText("Total:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -89,22 +146,40 @@ public class CustomerMenu extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(458, 458, 458)
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Confirm))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(RestaurantNAme)
-                            .addComponent(jLabel1))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(Restaurant, 0, 126, Short.MAX_VALUE)
-                            .addComponent(FoodName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(81, 81, 81)
-                        .addComponent(Add, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 91, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(FoodName, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(price, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(Add, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(11, 11, 11))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(jLabel3)
+                                .addGap(34, 34, 34)
+                                .addComponent(quantity, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(Cancel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Confirm)))
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel4)
+                        .addGap(18, 18, 18)
+                        .addComponent(totalAmt, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1)
+                        .addGap(11, 11, 11)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -114,18 +189,29 @@ public class CustomerMenu extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(RestaurantNAme)
                     .addComponent(Restaurant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(36, 36, 36)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(FoodName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(quantity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel2)
+                        .addComponent(price, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(Add))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(27, 27, 27)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(totalAmt))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Confirm)
-                    .addComponent(Cancel))
-                .addContainerGap(13, Short.MAX_VALUE))
+                    .addComponent(jButton1))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -135,14 +221,14 @@ public class CustomerMenu extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(13, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel1.getAccessibleContext().setAccessibleName("Restaurant Name");
@@ -152,17 +238,34 @@ public class CustomerMenu extends javax.swing.JFrame {
 
     private void AddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddActionPerformed
       
-       String restaurant = (String)Restaurant.getSelectedItem();
+           //String restaurant = (String)Restaurant.getSelectedItem();
        String foodname = (String)FoodName.getSelectedItem();
-       FastestDeliveryMan fdm = new FastestDeliveryMan(restaurant,foodname);
+       double Price = Double.parseDouble(price.getText());
+       int qty = Integer.parseInt(quantity.getText());
+       //FastestDeliveryMan fdm = new FastestDeliveryMan(restaurant,foodname);
        
-       FastestDeliveryManList.add(fdm);
+       double total;
        
-      
-      show.setText(formatList() +restaurant+ "      " + foodname );    
+       total = qty * Price;
+       
+       String qty1 = Integer.toString(qty);
+       String aString = Double.toString(total);      
+       //FastestDeliveryManList.add(fdm);
+     DefaultTableModel model = (DefaultTableModel)show.getModel();
+         
+           String result[] = {foodname, qty1,aString};
+          
+            model.addRow(result);
+            double sum = 0;
+ 
+  for(int i = 0;i<model.getRowCount();i++){
+     double a =Double.parseDouble((String)model.getValueAt(i, 2));
+     sum +=a;
+ 
      
-       
-       
+   totalAmt.setText("RM"+String.valueOf(format.format(sum)));
+  }
+    
     }//GEN-LAST:event_AddActionPerformed
 
     private void RestaurantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestaurantActionPerformed
@@ -171,16 +274,73 @@ public class CustomerMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_RestaurantActionPerformed
 
     private void ConfirmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ConfirmActionPerformed
-    JOptionPane.showMessageDialog(null,"Thank You");        // TODO add your handling code here:
+        new contactNumber().setVisible(true);
+        dispose();
+  // TODO add your handling code here:
     }//GEN-LAST:event_ConfirmActionPerformed
+
+    private void FoodNameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FoodNameActionPerformed
+        String foodname = (String)FoodName.getSelectedItem();
+        
+        if(foodname.equals("Mee")){
+            price.setText("8.00");
+        }
+        else if(foodname.equals("Rice")){
+            price.setText("6.00");
+        }
+        else if(foodname.equals("Soup")){
+            price.setText("5.00");
+        }
+        else if(foodname.equals("Fish")){
+            price.setText("4.00");
+        }
+        else if(foodname.equals("Chicken")){
+            price.setText("4.50");
+        }
+    }//GEN-LAST:event_FoodNameActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void quantityActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quantityActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_quantityActionPerformed
+    
+    /*public String order()
+            {
+                 
+           String restaurant = (String)Restaurant.getSelectedItem();
+       String foodname = (String)FoodName.getSelectedItem();
+       double Price = Double.parseDouble(price.getText());
+       int qty = Integer.parseInt(quantity.getText());
+       FastestDeliveryMan fdm = new FastestDeliveryMan(restaurant,foodname);
+       
+       double total;
+       total = qty * Price;
+       FastestDeliveryManList.add(fdm);
+       
+       String out = "";
+       
+       out = foodname+Price+qty+total;
+       return out;
+            }   
     
      public String formatList() {
+       String restaurant = (String)Restaurant.getSelectedItem();
+       String foodname = (String)FoodName.getSelectedItem();
+       double Price = Double.parseDouble(price.getText());
+       int qty = Integer.parseInt(quantity.getText());
+       FastestDeliveryMan fdm = new FastestDeliveryMan(restaurant,foodname);
+       
+       
     String outputStr = "";
     for (int i = 0; i < FastestDeliveryManList.size(); ++i) {
-      outputStr += "\n"+(i + 1) + ". " + FastestDeliveryManList.get(i);
+      outputStr += "\n"+(i + 1) + ". " ;
+      
     }
     return outputStr;
-  }
+  }*/
     /**
      * @param args the command line arguments
      */
@@ -209,8 +369,10 @@ public class CustomerMenu extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+       
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                
                 new CustomerMenu().setVisible(true);
             }
         });
@@ -218,14 +380,22 @@ public class CustomerMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Add;
-    private javax.swing.JButton Cancel;
     private javax.swing.JButton Confirm;
     private javax.swing.JComboBox<String> FoodName;
     private javax.swing.JComboBox<String> Restaurant;
     private javax.swing.JLabel RestaurantNAme;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea show;
+    private javax.swing.JLabel price;
+    private javax.swing.JTextField quantity;
+    private javax.swing.JTable show;
+    private javax.swing.JLabel totalAmt;
     // End of variables declaration//GEN-END:variables
+
+   
 }
